@@ -1,0 +1,118 @@
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.notes-form-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 30vh;
+  width: 40vw;
+  margin-top: 5vh;
+  padding: 0;
+}
+.notes-form-container input {
+  height: 20%;
+  width: 100%;
+  border: none;
+  padding: 1vh;
+  outline: none;
+}
+.notes-form-container textarea {
+  height: 80%;
+  width: 100%;
+  border: none;
+  padding: 1vh;
+  outline: none;
+  resize: none;
+}
+.display-notes {
+  margin-top: 5vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.add-note,
+.delete-note {
+  border: none !important; 
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: inherit;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: rgb(186, 186, 81);
+  margin: 2vh 3vh 1vh 1vh;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 10%;
+}
+.edit-note,.cancel-edit,.save-edit{
+  border: none !important; 
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgb(186, 186, 81);
+  /* margin: 2vh 3vh 1vh 1vh; */
+}
+.cancel-edit{
+  margin-right: 10px;
+}
+.delete-note {
+  font-size: 1rem;
+  margin: 1vh;
+  height: auto;
+}
+.display-note {
+  position: relative;
+  border-radius: 2%;
+  padding: 1vh;
+  margin: 2vh;
+  /* min-height: 15vh; */
+  width: 28vw;
+  background-color: antiquewhite;
+}
+.display-note h2 {
+  word-wrap: break-word;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.display-note p {
+  word-wrap: break-word;
+}
+
+@media screen and (max-width:815px) {
+  .display-notes{
+    grid-template-columns: 1fr 1fr;
+  }
+  .display-note{
+    width: 42vw;
+  }
+}
+@media screen and (max-width:540px) {
+  .notes-form-container{
+    width: 80vw;
+  }
+ .add-note,.delete-note{
+  font-size: 14px;
+ }
+ .notes-form-container textarea{
+  padding-bottom: 5vh;
+ }
+  .display-notes{
+    grid-template-columns: 1fr;
+  }
+  .display-note{
+    width: 85vw;
+    margin: 0;
+    margin-bottom: 5vh;
+  }
+  .display-note p{
+    padding-bottom: 2vh;
+  }
+}
