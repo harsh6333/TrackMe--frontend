@@ -19,12 +19,11 @@
   justify-content: center;
   align-items: center;
 }
-.title-signup-text{
-font-size: 24px;
+.title-signup-text {
+  font-size: 24px;
   font-weight: bolder;
 }
 .signup-form {
-    
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,90 +43,132 @@ font-size: 24px;
   outline: none !important;
   padding-left: 2%;
 }
-.signup-form h6{
-    font-weight: bold;
+.signup-form h6 {
+  font-weight: bold;
 }
 .signup {
   display: flex;
   flex-direction: column;
- 
+
   margin-left: 5vh;
 }
 .signup h1 {
   margin: 0;
 }
-.buttons-signup{
-    align-self: self-start;
-    padding-left: 5vh;
-    padding-top: 4vh;
-    display: flex;
-    flex-direction: column;
+.buttons-signup {
+  align-self: self-start;
+  padding-left: 5vh;
+  padding-top: 4vh;
+  display: flex;
+  flex-direction: column;
 }
-.already-user{
-    display: flex;
-    margin-top: 20px;
+.already-user {
+  display: flex;
+  margin-top: 20px;
 }
-.already-user-btn{
-    list-style: none;
-    text-decoration: none;
+.already-user-btn {
+  list-style: none;
+  text-decoration: none;
 }
 .already-user-btn:hover {
-  text-decoration: none; 
+  text-decoration: none;
+}
+.btn--signin {
+  background-color: #006ae8;
+  height: 5vh;
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+  display: flex;
+  flex-direction: column;
+}
+.or-login-text {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.or-login-text p {
+  margin-top: 2vh;
+}
+.or-login-text span {
+  width: 30%;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  height: 1px;
+  color: black;
+  background-color: black;
+}
+
+@media screen and (max-width: 700px) {
+  .signup-container {
+    flex-direction: column;
+    justify-content: center;
+    padding: 5vh;
+  }
+  .signup {
+    margin-left: 0;
+    width: 90%;
+  }
+  .title-signup {
+    margin: 0;
+  }
+  .signup-form {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 450px) {
+  .signup-container {
+    padding: 1vh;
+  }
+  .signup {
+    margin-left: 0vh;
+    width: 100%;
+  }
+  .signup-form {
+    width: 100%;
+    margin-top: 40px;
+  }
+  .title-signup-text {
+    font-size: 20px;
+    font-weight: bolder;
+  }
+  .signup-form input {
+    height: 40px;
+  }
+  .signup-form h6 {
+    font-weight: bold;
+  }
+
+  .signup h1 {
+    margin: 0;
+  }
   
-}
-.btn--signin{
- background-color: #006AE8;
-    height: 5vh;
+  .btn--signin {
+    background-color: #006ae8;
+    height: 40px;
     border-radius: 5px;
-}
+  }
 
-
-.or-login-text{
+  .error {
+    color: red;
+    display: flex;
+    flex-direction: column;
+  }
+  .or-login-text {
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
-}
-.or-login-text p{
+  }
+  .or-login-text p {
     margin-top: 2vh;
-}
-.or-login-text span{
-    width: 30%;
-    margin-left: 2vh;
-    margin-right: 2vh;
+  }
+  .or-login-text span {
+    width: 0%;
     height: 1px;
-    color: black;
-    background-color: black;
-}
-
-@media screen and (max-width:700px) {
-    .signup-container {
- 
-  flex-direction: column;
-  justify-content: center;
-  padding: 5vh;
-}
-.signup{
-    margin-left: 0;
-    width: 90%;
-}
-.title-signup{
-    margin: 0;
-}
-.signup-form{
-    width: 100%;
-}
-}
-@media screen and (max-width:450px) {
-    .signup-container{
-        padding: 2vh;
-    }
-.signup{
-    margin-left: 0;
-    width: 98%;
-    
-}
-.signup-form{
-    width: 100%;
-}
+   
+  }
 }

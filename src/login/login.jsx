@@ -6,6 +6,7 @@ import "../assets/css/login.css";
 import axios from "axios";
 
 const Login = () => {
+  const [ErrorMessage, setErrorMessage] = useState("");
   const [UserCredentials, setUserCredentials] = useState({
     Username: "",
     password: "",
@@ -30,7 +31,6 @@ const Login = () => {
           password: UserCredentials.password,
         }
       );
-
       const { success, authToken } = response.data;
 
       if (!success) {
@@ -47,7 +47,13 @@ const Login = () => {
         window.location.reload();
       }
     } catch (error) {
-      // console.log("Error logging in");
+      // Handle other errors
+      if (error.response && error.response.status === 400) {
+        // If the error is a 400 Bad Request, set error message to show 
+        setErrorMessage(error.response.data.error);
+      } else {
+        console.log("Error logging in:", error);
+      }
     }
   };
 
@@ -80,7 +86,7 @@ const Login = () => {
         window.location.reload();
       }
     } catch (error) {
-      //  console.log("Error logging in");
+      console.log("Error logging in");
     }
   };
 
@@ -110,6 +116,7 @@ const Login = () => {
                 onChange={Changed}
               />
             </label>
+            <p className="Error">{ErrorMessage}</p>
             <button type="submit" className="Log-In-Button">
               Log In
             </button>

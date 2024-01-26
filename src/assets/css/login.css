@@ -72,6 +72,9 @@
   border-radius: 5px;
   width: 30%;
 }
+.Error{
+  color: red;
+}
 @media screen and (max-width: 800px) {
   .login {
     width: 60%;

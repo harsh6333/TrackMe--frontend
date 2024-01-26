@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/signup.css";
 
 const Signup = () => {
+  const [ErrorMessages, setErrorMessages] = useState([]);
   const [UserCredentials, setUserCredentials] = useState({
     Username: "",
     email: "",
@@ -17,36 +18,54 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/api/createuser`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          Username: UserCredentials.Username,
-          email: UserCredentials.email,
-          password: UserCredentials.password,
-        }),
-      }
-    );
-    const json = await response.json();
-    localStorage.setItem("SignedIn", json.success);
-    if (!json.success) {
-      alert("Enter valid Credentials");
-    }
 
-    if (json.success) {
-      navigate("/login");
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/createuser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            Username: UserCredentials.Username,
+            email: UserCredentials.email,
+            password: UserCredentials.password,
+          }),
+        }
+      );
+
+      const json = await response.json();
+
+      if (!json.success) {
+        // Check if the response includes validation errors
+        if (json.errors) {
+          // Handle validation errors, set them in the state variable
+          setErrorMessages(json.errors.map((error) => error.msg));
+        } else {
+          // Handle other types of errors
+          setErrorMessages([json.error]);
+        }
+      }
+
+      if (json.success) {
+        localStorage.setItem("SignedIn", true);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error during form submission:", error);
+      // Handle other types of errors, for example, set an error message in state
+      setErrorMessages(["An error occurred while submitting the form."]);
     }
   };
+
   const Changed = (e) => {
     setUserCredentials({
       ...UserCredentials,
       [e.target.name]: e.target.value,
     });
   };
+
   const senddata = async (credential) => {
     try {
       const resp = await axios.post(
@@ -69,12 +88,14 @@ const Signup = () => {
         axios.defaults.headers.common["Authorization"] = `${authToken}`;
         // Redirect to the homepage
         navigate("/todo");
-         window.location.reload();
+        window.location.reload();
       }
     } catch (error) {
-      // console.log(error);
+      // Handle errors
+      console.log(error);
     }
   };
+
   return (
     <>
       <div className="signup-container">
@@ -111,6 +132,11 @@ const Signup = () => {
                 onChange={Changed}
               />
             </label>
+            <p className="error">
+              {ErrorMessages.map((errorMessage, index) => (
+                <span key={index}>{errorMessage}</span>
+              ))}
+            </p>
             <div className="buttons-signup">
               <button type="submit" className="btn--signin">
                 Sign In

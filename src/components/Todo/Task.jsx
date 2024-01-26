@@ -1,6 +1,5 @@
 import React from "react";
 import "../../assets/css/form.css";
-import donetask from '../../../public/images/checked.png'
 import deletebutton from "../../../public/images/delete.png";
 const Task = ({ task, onDeleteTask }) => {
   return (
