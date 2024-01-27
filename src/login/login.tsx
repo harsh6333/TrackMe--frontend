@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import "../assets/css/login.css";
+import "../css/login.css";
 import axios from "axios";
 
-const Login = () => {
-  const [ErrorMessage, setErrorMessage] = useState("");
-  const [UserCredentials, setUserCredentials] = useState({
+interface UserCredentials {
+  Username: string;
+  password: string;
+}
+
+const Login: React.FC = () => {
+  const [ErrorMessage, setErrorMessage] = useState<string>("");
+  const [UserCredentials, setUserCredentials] = useState<UserCredentials>({
     Username: "",
     password: "",
   });
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -20,7 +26,7 @@ const Login = () => {
     axios.defaults.headers.common["Authorization"] = `${authToken}`;
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -48,8 +54,8 @@ const Login = () => {
       }
     } catch (error) {
       // Handle other errors
-      if (error.response && error.response.status === 400) {
-        // If the error is a 400 Bad Request, set error message to show 
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        // If the error is a 400 Bad Request, set error message to show
         setErrorMessage(error.response.data.error);
       } else {
         console.log("Error logging in:", error);
@@ -57,13 +63,14 @@ const Login = () => {
     }
   };
 
-  const Changed = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserCredentials({
       ...UserCredentials,
       [e.target.name]: e.target.value,
     });
   };
-  const senddata = async (credential) => {
+
+  const senddata = async (credential: any) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/google-login`,
@@ -104,7 +111,7 @@ const Login = () => {
               <input
                 name="Username"
                 value={UserCredentials.Username}
-                onChange={Changed}
+                onChange={handleChange}
               />
             </label>
             <label htmlFor="password" className="Pass-word">
@@ -113,7 +120,7 @@ const Login = () => {
                 name="password"
                 value={UserCredentials.password}
                 id=""
-                onChange={Changed}
+                onChange={handleChange}
               />
             </label>
             <p className="Error">{ErrorMessage}</p>
@@ -127,14 +134,21 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   // Extract the Google ID token from the credential response
-                  const credential = jwt_decode(credentialResponse.credential);
-                  senddata(credential);
+                //  const credential = jwt_decode<JwtPayload>(
+                //    (credentialResponse as any).credential
+                //  );
+                 const credential = jwtDecode(credentialResponse.credential as any);
+                 senddata(credential);
                 }}
                 onError={() => {
                   console.log("Login Failed");
                 }}
               />
             </GoogleOAuthProvider>
+            <p className="google">
+              SignIn might <br /> take Time due to slow <br />
+              Database
+            </p>
           </form>
         </div>
       </div>

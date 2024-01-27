@@ -101,7 +101,9 @@
   color: black;
   background-color: black;
 }
-
+.google{
+  color: black;
+}
 @media screen and (max-width: 700px) {
   .signup-container {
     flex-direction: column;

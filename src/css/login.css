@@ -75,6 +75,9 @@
 .Error{
   color: red;
 }
+.google{
+  color: black;
+}
 @media screen and (max-width: 800px) {
   .login {
     width: 60%;

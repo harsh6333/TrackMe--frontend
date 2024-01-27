@@ -1,5 +1,5 @@
-import React from "react";
-import "../assets/css/NotFound.css";
+
+import "../css/NotFound.css";
 const NotFound = () => {
   return (
     <div className="notfound">

@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import NavbarMenu from "./Navbar";
 import gauge from "../../public/images/gauge.png";
 import thermometer from "../../public/images/thermometer.png";
 import humidity from "../../public/images/humidity.png";
 import wind from "../../public/images/wind.png";
-import "../assets/css/Weather.css";
+import "../css/Weather.css";
 import axios from "axios";
-const Weather = () => {
-  const [IsWeatherdata, setIsWeatherdata] = useState({
+
+interface WeatherData {
+  City: string;
+  Country: string;
+  date: string;
+  Weather: string;
+  WeatherDesc: string;
+  Temp: number | null;
+  icon: string;
+  humidity: number | null;
+  pressure: number | null;
+  feels: number | null;
+  Maxtemp: number | null;
+  Mintemp: number | null;
+  Windspeed: number | null;
+  longitudes: number | null;
+  latitudes: number | null;
+}
+
+const Weather: React.FC = () => {
+  const [weatherData, setWeatherData] = useState<WeatherData>({
     City: "",
     Country: "",
     date: "",
@@ -28,12 +47,15 @@ const Weather = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [country, setCountry] = useState("");
   const [date, setDate] = useState("");
-  const handleCityChange = (e) => {
+
+  const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCity(e.target.value);
   };
-  const handleCountryChange = (e) => {
+
+  const handleCountryChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCountry(e.target.value);
   };
+
   const response = async () => {
     await axios
       .get(
@@ -59,7 +81,7 @@ const Weather = () => {
         const time = timezone.data;
         const date = time["date_time_txt"];
         setDate(date);
-        setIsWeatherdata({
+        setWeatherData({
           City: city,
           Country: country,
           date: date,
@@ -79,14 +101,16 @@ const Weather = () => {
       });
     setIsClicked(true);
   };
-  const Formsubmit = (e) => {
+
+  const Formsubmit = (e: FormEvent) => {
     e.preventDefault();
   };
+
   return (
     <>
       <NavbarMenu />
       <div className="container-weather">
-        <h4 className="lets-find">Let's find out weather in you city</h4>
+        <h4 className="lets-find">Let's find out weather in your city</h4>
         <form id="form" className="form" onSubmit={Formsubmit}>
           <input
             id="city"
@@ -106,7 +130,6 @@ const Weather = () => {
             required
             onChange={handleCountryChange}
           />
-
           <button type="submit" className="form-submit" onClick={response}>
             Search
           </button>
@@ -118,30 +141,39 @@ const Weather = () => {
               <div className="desc">
                 <img
                   id="img"
-                  src={`http://openweathermap.org/img/wn/${IsWeatherdata.icon}.png`}
+                  src={`http://openweathermap.org/img/wn/${weatherData.icon}.png`}
                   alt=""
                 />
-                <span>{IsWeatherdata.WeatherDesc}</span>
+                <span>{weatherData.WeatherDesc}</span>
               </div>
             </div>
             <div className="tempcity">
               <div id="city2">
                 <h2>
-                  {(parseInt(IsWeatherdata.Temp) - 273.15).toFixed(2)}&deg;C
+                  {((weatherData.Temp!) - 273.15).toFixed(2)}
+                  &deg;C
                 </h2>
                 <span>
-                  Weather Today in {IsWeatherdata.City},{IsWeatherdata.Country}
+                  Weather Today in {weatherData.City},{weatherData.Country}
                 </span>
               </div>
               <div id="tempv">
                 <span>MinTemperature|MaxTemperature</span>
                 <span>
-                  {(parseInt(IsWeatherdata.Mintemp) - 273.15).toFixed(2)}&deg;C|
-                  {(parseInt(IsWeatherdata.Maxtemp) - 273.15).toFixed(2)}&deg;C
+                  {((weatherData.Mintemp!) - 273.15).toFixed(
+                    2
+                  )}
+                  &deg;C|
+                  {((weatherData.Maxtemp!) - 273.15).toFixed(
+                    2
+                  )}
+                  &deg;C
                 </span>
                 <span id="feels">
                   Feels Like:{" "}
-                  {(parseInt(IsWeatherdata.feels) - 273.15).toFixed(2)}
+                  {((weatherData.feels!) - 273.15).toFixed(
+                    2
+                  )}
                   &deg;C
                 </span>
               </div>
@@ -153,7 +185,7 @@ const Weather = () => {
                   Feels like
                 </span>
                 <h2>
-                  {(parseInt(IsWeatherdata.feels) - 273.15).toFixed(2)}&deg;C
+                  {((weatherData.feels!) - 273.15).toFixed(2)}&deg;C
                 </h2>
               </div>
               <div className="grid-i Pressure">
@@ -161,21 +193,21 @@ const Weather = () => {
                   <img id="im" src={gauge} alt="" />
                   Pressure
                 </span>
-                <h2>{IsWeatherdata.pressure}</h2>
+                <h2>{weatherData.pressure}</h2>
               </div>
               <div className="grid-i humidity">
                 <span>
                   <img id="im" src={humidity} alt="" />
                   Humidity
                 </span>
-                <h2>{IsWeatherdata.humidity}</h2>
+                <h2>{weatherData.humidity}</h2>
               </div>
               <div className="grid-i wind">
                 <span>
                   <img id="im" src={wind} alt="" />
                   Wind Speed
                 </span>
-                <h2>{IsWeatherdata.Windspeed}</h2>
+                <h2>{weatherData.Windspeed}</h2>
               </div>
             </div>
           </div>

@@ -6,55 +6,91 @@ import axios from "axios";
 import NavbarM from "../Navbar";
 import { icons, options } from "./icons";
 import hamburger from "../../../public/images/hamb.png";
-import "../../assets/css/form.css";
+import '../../css/form.css'
 import deletebutton from "../../../public/images/delete.png";
-const Todo = () => {
-  const [icon, setIcon] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [taskname, setTaskName] = useState("");
-  const [taskdesc, setTaskDesc] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState("Select Priority");
-  const [tasks, setTasks] = useState([]);
-  const [isClicked, setIsClicked] = useState(false);
-  const [isFormVisible, setIsFormVisible] = useState(true);
-  const [listName, setListName] = useState("");
-  const [lists, setLists] = useState([]);
-  const [nextListId, setNextListId] = useState(1);
-  const [tasklistbyId, setTaskListbyId] = useState({});
-  const [selectedlist, setSelectedList] = useState(null);
-  const [ListNamebbyId, setListNamebyId] = useState({ name: "", icon: "" });
-  const [taskicon, settaskIcon] = useState("");
-  const [userLists, setUserLists] = useState([]);
+
+interface Task {
+  name: string;
+  description: string;
+  dueDate: string;
+  priority: string;
+  taskicon: string;
+}
+
+interface List {
+  listname: string;
+  icon: string;
+  id: number;
+}
+
+interface UserList {
+  _id: string;
+  listname: string;
+  tasks: Task[];
+  icon: string;
+}
+
+interface TodoProps {}
+
+const Todo: React.FC<TodoProps> = () => {
+  const [icon, setIcon] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<any>(null);
+  const [taskname, setTaskName] = useState<string>("");
+  const [taskdesc, setTaskDesc] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string>("");
+  const [selectedPriority, setSelectedPriority] =
+    useState<string>("Select Priority");
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(true);
+  const [listName, setListName] = useState<string>("");
+  const [lists, setLists] = useState<List[]>([]);
+  const [nextListId, setNextListId] = useState<number>(1);
+  const [tasklistbyId, setTaskListbyId] = useState<{ [key: string]: any }>({});
+  const [selectedlist, setSelectedList] = useState<number | null>(null);
+  const [ListNamebbyId, setListNamebyId] = useState<{
+    name: string;
+    icon: string;
+  }>({ name: "", icon: "" });
+  const [taskicon, settaskIcon] = useState<string>("");
+  const [userLists, setUserLists] = useState<UserList[]>([]);
   const authToken = localStorage.getItem("authToken");
-  const [selectedUserList, setSelectedUserList] = useState("");
-  const [isTaskListUpdated, setIsTaskListUpdated] = useState(false);
-  const [listbutton, setListButton] = useState(false);
-  const [isClicked1, setIsClicked1] = useState(false);
-  const [selecteduserlistdata, setSelectedUserListData] = useState({
+  const [selectedUserList, setSelectedUserList] = useState<string>("");
+  const [isTaskListUpdated, setIsTaskListUpdated] = useState<boolean>(false);
+  const [listbutton, setListButton] = useState<boolean>(false);
+  const [isClicked1, setIsClicked1] = useState<boolean>(false);
+  const [selecteduserlistdata, setSelectedUserListData] = useState<{
+    listName: string;
+    tasks: Task[];
+    icon: string;
+  }>({
     listName: "",
-    tasks: {},
+    tasks: [],
     icon: "",
   });
-  const name = (e) => {
+
+  const name = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskName(e.target.value);
   };
 
-  const description = (e) => {
+  const description = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskDesc(e.target.value);
   };
 
-  const handleDueDateChange = (e) => {
+  const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDueDate(e.target.value);
   };
 
-  const formatDate = (date) => {
-    const options = { month: "long", day: "numeric" };
+  const formatDate = (date: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      month: "long",
+      day: "numeric",
+    };
     return new Date(date).toLocaleDateString(undefined, options);
   };
+
   useEffect(() => {
     if (isTaskListUpdated) {
-      // Make the Axios POST request when tasklistbyId is updated
       const headers = {
         Authorization: `${authToken}`,
         "Content-Type": "application/json",
@@ -69,19 +105,18 @@ const Todo = () => {
         .then(() => {
           console.log("Task added successfully");
         })
-        .catch((error) => {
+        .catch(() => {
           // console.error("Error adding task:", error);
         });
 
-      // Reset the flag to false
       setIsTaskListUpdated(false);
     }
   }, [isTaskListUpdated, tasklistbyId, authToken]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const task = {
+    const task: Task = {
       name: taskname,
       description: taskdesc,
       dueDate: formatDate(dueDate),
@@ -90,11 +125,10 @@ const Todo = () => {
     };
 
     if (ListNamebbyId.name in tasklistbyId) {
-      // If the list exists in tasklistbyId, add the task to it.
       setTaskListbyId((prevTaskList) => ({
         ...prevTaskList,
         [ListNamebbyId.name]: {
-          ...prevTaskList[ListNamebbyId.name], // Preserve the existing properties
+          ...prevTaskList[ListNamebbyId.name],
           tasks: [...prevTaskList[ListNamebbyId.name].tasks, task],
         },
       }));
@@ -102,12 +136,11 @@ const Todo = () => {
       setTaskListbyId((prevTaskList) => ({
         ...prevTaskList,
         [selectedUserList]: {
-          ...prevTaskList[selectedUserList], // Preserve the existing properties
+          ...prevTaskList[selectedUserList],
           tasks: [...prevTaskList[selectedUserList].tasks, task],
         },
       }));
     } else {
-      // Create a new list and add the task to it.
       setTaskListbyId((prevTaskList) => ({
         ...prevTaskList,
         [ListNamebbyId.name]: {
@@ -127,42 +160,43 @@ const Todo = () => {
     setIsClicked1(true);
     setIsFormVisible(true);
   };
+
   const handleCancelClick = () => {
     setIsFormVisible(false);
     setIsClicked1(false);
   };
 
-  const handleOptionChange = (selected) => {
+  const handleOptionChange = (selected: any) => {
     if (selected && selected.value) {
       setSelectedOption(selected);
     }
   };
-  const handleOptionChange2 = (selected) => {
+
+  const handleOptionChange2 = (selected: any) => {
     if (selected && selected.value) {
       settaskIcon(selected);
     }
   };
 
-  const handlePriorityClick = (priority) => {
+  const handlePriorityClick = (priority: string) => {
     setSelectedPriority(priority);
   };
 
-  const handleChangeListName = (e) => {
+  const handleChangeListName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setListName(e.target.value);
     setIcon(selectedOption.value);
   };
+
   const handleLists = () => {
     const listId = nextListId;
-    const newList = { listname: listName, icon: icon, id: listId };
+    const newList: List = { listname: listName, icon: icon, id: listId };
 
-    // Update the local state to add the new list
     setLists((prevlists) => [...prevlists, newList]);
 
-    // Add the new list to tasklistbyId
     setTaskListbyId((prevTaskList) => ({
       ...prevTaskList,
       [listName]: {
-        tasks: [], // Initialize with an empty tasks array
+        tasks: [],
         icon: icon,
       },
     }));
@@ -173,15 +207,16 @@ const Todo = () => {
   };
 
   const customStyles = {
-    option: (provided, state) => ({
+    option: (provided: any) => ({
       ...provided,
       display: "inline-block",
       width: "50%",
       padding: "5px",
     }),
   };
+
   const customStyles2 = {
-    option: (provided, state) => ({
+    option: (provided: any) => ({
       ...provided,
       display: "inline-block",
       width: "20%",
@@ -189,14 +224,13 @@ const Todo = () => {
     }),
   };
   const customComponents = {
-    menuList: (provided) => ({
+    menuList: (provided: any) => ({
       ...provided,
       display: "grid",
       gridTemplateColumns: "repeat(4, 1fr)",
       gridGap: "10px",
     }),
   };
-
   useEffect(() => {
     const headers = {
       Authorization: `${authToken}`,
@@ -208,7 +242,7 @@ const Todo = () => {
       .then((response) => {
         setUserLists(response.data.userlists);
         const userlistss = response.data.userlists;
-        userlistss.map((userlist) => {
+        userlistss.map((userlist: any) => {
           setTaskListbyId((prevTaskList) => ({
             ...prevTaskList,
             [userlist.listname]: {
@@ -216,13 +250,14 @@ const Todo = () => {
               icon: userlist.icon,
             },
           }));
-        }); // Set the user lists in state if needed
+        });
       })
-      .catch((error) => {
+      .catch(() => {
         // console.error("Error fetching user's lists:", error);
       });
   }, [authToken]);
-  const deleteTask = async (index) => {
+
+  const deleteTask = async (index: number) => {
     if (selectedUserList) {
       const updatedTasks =
         (tasklistbyId[selectedUserList] &&
@@ -230,11 +265,9 @@ const Todo = () => {
         [];
 
       if (index < 0 || index >= updatedTasks.length) {
-        // console.error("Invalid index:", index);
         return;
       }
 
-      // Send an API request to delete the task from the database
       try {
         await axios.delete(
           `${import.meta.env.VITE_SERVER_URL}/api/tasks/${index}`,
@@ -245,13 +278,11 @@ const Todo = () => {
             },
             data: { index: index, listname: selectedUserList },
           }
-        ); // Replace with your API endpoint
+        );
       } catch (error) {
-        // console.error("Error deleting task from the database:", error);
-        return; // Exit early if there's an error
+        return;
       }
 
-      // Update the state with the modified list of tasks
       updatedTasks.splice(index, 1);
       setTaskListbyId((prevTaskList) => ({
         ...prevTaskList,
@@ -263,7 +294,7 @@ const Todo = () => {
     }
   };
 
-  const onDeleteTask = async (index) => {
+  const onDeleteTask = async (index: number) => {
     if (ListNamebbyId.name in tasklistbyId) {
       const updatedList = [...tasklistbyId[ListNamebbyId.name].tasks];
       if (index >= 0 && index < updatedList.length) {
@@ -282,7 +313,6 @@ const Todo = () => {
         } catch (error) {
           // console.error("Error deleting task from the database:", error);
         }
-        // Update the tasklistbyId object with the modified list of tasks
         setTaskListbyId((prevTaskList) => ({
           ...prevTaskList,
           [ListNamebbyId.name]: {
@@ -293,21 +323,18 @@ const Todo = () => {
       }
     }
 
-    // Remove the task from the tasks state (assuming tasks is an array)
     if (index >= 0 && index < tasks.length) {
       const updatedTasks = [...tasks];
       updatedTasks.splice(index, 1);
       setTasks(updatedTasks);
     }
-    // Send an API request to delete the task from the backend
   };
 
-  const handleDeleteList = async (listName) => {
+  const handleDeleteList = async (listName: string) => {
     if (listName === selectedUserList) {
-      setSelectedUserList(""); // Clear the selectedUserList if it's the list being deleted
+      setSelectedUserList("");
     }
 
-    // Send an API request to delete the list from the database
     try {
       await axios.delete(
         `${import.meta.env.VITE_SERVER_URL}/api/delete-list/${listName}`,
@@ -320,7 +347,6 @@ const Todo = () => {
         }
       );
 
-      // Update the local state to remove the deleted list
       const updatedLists = lists.filter((list) => list.listname !== listName);
       setLists(updatedLists);
 
@@ -333,9 +359,8 @@ const Todo = () => {
     }
   };
 
-  const handleDeleteSelectedList = async (listName) => {
+  const handleDeleteSelectedList = async () => {
     if (ListNamebbyId.name) {
-      // Send an API request to delete the list from the database
       try {
         await axios.delete(
           `${import.meta.env.VITE_SERVER_URL}/api/delete-list/${
@@ -350,7 +375,6 @@ const Todo = () => {
           }
         );
 
-        // Update the local state to remove the deleted list
         const updatedLists = lists.filter(
           (list) => list.listname !== ListNamebbyId.name
         );
@@ -362,21 +386,25 @@ const Todo = () => {
       }
     }
   };
+
   const listbuttons = () => {
     setIsClicked(true);
     setListButton((prevlistbutton) => !prevlistbutton);
   };
+
   const listselected = () => {
-    // setListButton((prevlistbutton) => !prevlistbutton);
     setListButton(false);
   };
+
   const listbuttons2 = () => {
     setListButton((prevlistbutton) => !prevlistbutton);
     setIsClicked(false);
   };
   return (
     <>
-      <NavbarM className="nav-home" />
+      <div className="nav-home">
+        <NavbarM />
+      </div>
       <div className="Todo-container">
         <button
           onClick={listbuttons}
@@ -441,7 +469,7 @@ const Todo = () => {
                     </h5>
                   </button>
                   <button
-                    onClick={() => handleDeleteSelectedList(list.listname)}
+                    onClick={() => handleDeleteSelectedList()} //list.listname
                     className="delete-list-button"
                   >
                     <img src={deletebutton} alt="Delete" />
@@ -533,6 +561,7 @@ const Todo = () => {
                 onPriorityChange={handlePriorityClick}
                 onSubmit={handleSubmit}
                 onCancelClick={handleCancelClick}
+                selectedOption={undefined}
               />
               <TaskList
                 key={selectedlist}
@@ -580,6 +609,7 @@ const Todo = () => {
                 onPriorityChange={handlePriorityClick}
                 onSubmit={handleSubmit}
                 onCancelClick={handleCancelClick}
+                selectedOption={undefined}
               />
 
               <TaskList

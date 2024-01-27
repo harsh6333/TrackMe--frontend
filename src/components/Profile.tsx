@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarM from "./Navbar";
-import "../assets/css/home.css"
-const Profile = () => {
+import "../css/home.css";
+
+const Profile: React.FC = () => {
   const authToken = localStorage.getItem("authToken");
-  const [user, setUser] = useState({ Username: "", email: "" });
+  const [user, setUser] = useState<{ Username: string; email: string }>({
+    Username: "",
+    email: "",
+  });
+
   useEffect(() => {
     try {
       axios
@@ -20,7 +25,7 @@ const Profile = () => {
     } catch (error) {
       // console.log(error);
     }
-  });
+  }, [authToken]);
 
   return (
     <>

@@ -1,22 +1,26 @@
-import React from "react";
-import { useState } from "react";
-import "react-dotenv";
-import jwt_decode from "jwt-decode";
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { jwtDecode } from "jwt-decode";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "../assets/css/signup.css";
+import "../css/signup.css";
 
-const Signup = () => {
-  const [ErrorMessages, setErrorMessages] = useState([]);
-  const [UserCredentials, setUserCredentials] = useState({
+interface UserCredentials {
+  Username: string;
+  email: string;
+  password: string;
+}
+
+const Signup: React.FC = () => {
+  const [ErrorMessages, setErrorMessages] = useState<string[]>([]);
+  const [UserCredentials, setUserCredentials] = useState<UserCredentials>({
     Username: "",
     email: "",
     password: "",
   });
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -41,7 +45,7 @@ const Signup = () => {
         // Check if the response includes validation errors
         if (json.errors) {
           // Handle validation errors, set them in the state variable
-          setErrorMessages(json.errors.map((error) => error.msg));
+          setErrorMessages(json.errors.map((error: any) => error.msg));
         } else {
           // Handle other types of errors
           setErrorMessages([json.error]);
@@ -49,7 +53,7 @@ const Signup = () => {
       }
 
       if (json.success) {
-        localStorage.setItem("SignedIn", true);
+        localStorage.setItem("SignedIn", "true");
         navigate("/login");
       }
     } catch (error) {
@@ -59,14 +63,14 @@ const Signup = () => {
     }
   };
 
-  const Changed = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserCredentials({
       ...UserCredentials,
       [e.target.name]: e.target.value,
     });
   };
 
-  const senddata = async (credential) => {
+  const senddata = async (credential: any) => {
     try {
       const resp = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/google-signup`,
@@ -110,7 +114,7 @@ const Signup = () => {
               <input
                 name="Username"
                 value={UserCredentials.Username}
-                onChange={Changed}
+                onChange={handleChange}
               />
             </label>
             <label htmlFor="email">
@@ -120,7 +124,7 @@ const Signup = () => {
                 name="email"
                 value={UserCredentials.email}
                 id=""
-                onChange={Changed}
+                onChange={handleChange}
               />
             </label>
             <label htmlFor="password">
@@ -129,7 +133,7 @@ const Signup = () => {
                 name="password"
                 value={UserCredentials.password}
                 id=""
-                onChange={Changed}
+                onChange={handleChange}
               />
             </label>
             <p className="error">
@@ -154,14 +158,15 @@ const Signup = () => {
               <span></span>
             </div>
             <GoogleOAuthProvider
-              className="google-signup-btn"
               clientId={`${import.meta.env.VITE_CLIENT_ID}`}
+              //   className="google-signup-btn"
             >
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   // Extract the Google ID token from the credential response
-                  const credential = jwt_decode(credentialResponse.credential);
-                  console.log(credentialResponse);
+                  const credential = jwtDecode(
+                    credentialResponse.credential as any
+                  ) as any;
                   // Send the ID token to the backend
                   senddata(credential);
                 }}
@@ -170,6 +175,9 @@ const Signup = () => {
                 }}
               />
             </GoogleOAuthProvider>
+            <p className="google">
+              SignIn might <br /> take Time due to slow <br /> Database
+            </p>
           </form>
         </div>
       </div>

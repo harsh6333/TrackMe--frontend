@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../assets/css/form.css";
-const PriorityDropdown = ({ selectedPriority, onPriorityChange }) => {
+import '../../css/form.css'
+
+interface PriorityDropdownProps {
+  selectedPriority: string;
+  onPriorityChange: (priority: string) => void;
+}
+
+const PriorityDropdown: React.FC<PriorityDropdownProps> = ({
+  selectedPriority,
+  onPriorityChange,
+}) => {
   const priorityOptions = ["Top Priority", "Important", "Less Important"];
 
   return (
@@ -13,7 +22,7 @@ const PriorityDropdown = ({ selectedPriority, onPriorityChange }) => {
         {priorityOptions.map((priority, index) => (
           <Link
             key={index}
-            value={`Priority${index}`}
+            to={`#${priority}`} // Use a valid path or link to='#' for an anchor
             onClick={() => onPriorityChange(priority)}
           >
             {priority}

@@ -1,7 +1,20 @@
 import React from "react";
-import "../../assets/css/form.css";
+import "../../css/form.css";
 import deletebutton from "../../../public/images/delete.png";
-const Task = ({ task, onDeleteTask }) => {
+
+interface TaskProps {
+  task: {
+    name: string;
+    description: string;
+    taskno: number;
+    taskicon: { value: string };
+    priority: string;
+    dueDate: string;
+  };
+  onDeleteTask: (taskno: number) => void;
+}
+
+const Task: React.FC<TaskProps> = ({ task, onDeleteTask }) => {
   return (
     <div className="task">
       <div className="added-task-details">

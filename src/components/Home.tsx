@@ -1,7 +1,7 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import HomeSlider from "./slider";
-import "../assets/css/home.css";
+import "../css/home.css";
 
 const Home = () => {
   return (

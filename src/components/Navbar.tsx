@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import nav from "../../public/images/nav.png";
-import "../assets/css/nav.css";
+import "../css/nav.css";
 const NavbarM = () => {
   let navigate = useNavigate();
   const [clicked, setClicked] = useState(false);
   const clickedd = () => {
     setClicked((prev) => !prev);
   };
-  const [authToken, setauthToken] = useState(localStorage.getItem("authToken"));
+  const [authToken] = useState(localStorage.getItem("authToken"));
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/");
@@ -55,7 +55,7 @@ const NavbarM = () => {
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" onClick={handleLogout}>
+                <Link to={"/"} className="nav-link" onClick={handleLogout}>
                   Logout
                 </Link>
               </li>

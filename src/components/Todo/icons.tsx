@@ -1,4 +1,4 @@
-import React from "react";
+
 import todo1 from "../../../public/images/todo1.png";
 import todo2 from "../../../public/images/todo2.png";
 import todo3 from "../../../public/images/todo3.png";

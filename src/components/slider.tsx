@@ -8,7 +8,7 @@ import laptopweather from "../../public/images/laptop-weather.png";
 import mobilenotes from "../../public/images/mobile-notes.png";
 import mobiletodo from "../../public/images/mobile-todo.png";
 import tabmob from "../../public/images/tab-mob-tasks-1.png";
-import "../assets/css/home.css";
+import "../css/home.css";
 function HomeSlider() {
   return (
     <Carousel fade className="carousel carusel">

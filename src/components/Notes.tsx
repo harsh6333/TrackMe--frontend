@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from "react";
-import "../assets/css/notes.css";
+import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import "../css/notes.css";
 import NavbarM from "./Navbar";
 import axios from "axios";
 
-const Notes = () => {
-  const [note, setNote] = useState({
+interface Note {
+  title: string;
+  content: string;
+  id: number;
+}
+
+const Notes: React.FC = () => {
+  const [note, setNote] = useState<Note>({
     title: "",
     content: "",
-    id: Number,
+    id: 0,
   });
   const authToken = localStorage.getItem("authToken");
-  const [idnumber, setIdNumber] = useState(1);
-  const [notes, setNotes] = useState([]);
+  const [idnumber] = useState(1);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [isnotesupdated, setIsNotesUpdated] = useState(false);
   const [editIndex, setEditIndex] = useState(-1); // Initialize as -1 to indicate no active edit.
 
-  const handleNoteChange = (e) => {
+  const handleNoteChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setNote((prevnote) => {
       return { ...prevnote, [name]: value, id: idnumber };
@@ -57,7 +65,7 @@ const Notes = () => {
       });
   }, [authToken]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (editIndex === -1) {
       // Add a new note
@@ -70,20 +78,20 @@ const Notes = () => {
       setEditIndex(-1); // Reset edit mode
     }
     setIsNotesUpdated(true);
-    setNote({ title: "", content: "" });
+    setNote({ title: "", content: "", id: 0 });
   };
 
-  const handleEdit = (index) => {
+  const handleEdit = (index: number) => {
     setEditIndex(index);
     setNote(notes[index]);
   };
 
   const handleCancelEdit = () => {
     setEditIndex(-1); // Cancel edit mode
-    setNote({ title: "", content: "" });
+    setNote({ title: "", content: "", id: 0 });
   };
 
-  const handleDelete = async (index) => {
+  const handleDelete = async (index: number) => {
     // Create a copy of the notes array and remove the note at the given index
     const updatedNotes = [...notes];
     updatedNotes.splice(index, 1);
@@ -115,8 +123,8 @@ const Notes = () => {
             onChange={handleNoteChange}
           />
           <textarea
-            cols="30"
-            rows="10"
+            cols={30}
+            rows={10}
             placeholder="Content"
             value={note.content}
             onChange={handleNoteChange}
