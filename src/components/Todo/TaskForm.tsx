@@ -17,31 +17,12 @@ interface TaskFormProps {
   onPriorityChange: (priority: string) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancelClick: () => void;
-  selectedOption: any; // Adjust the type based on the actual type of selectedOption
-  handleOptionChange: (selected: any) => void; // Adjust the type based on the actual type of selected
-  customComponents: any; // Adjust the type based on the actual type of customComponents
-  options: any[]; // Adjust the type based on the actual type of options
-  customStyles: any; // Adjust the type based on the actual type of customStyles
+  selectedOption: any; 
+  handleOptionChange: (selected: any) => void; 
+  customComponents: any; 
+  options: any[]; 
+  customStyles: any; 
 }
-// interface TaskFormProps {
-//   handleOptionChange: (selected: any) => void;
-//   options: any;
-//   customComponents: { menuList: (provided: any) => any };
-//   customStyles: { option: (provided: any, state: any) => any };
-//   taskname: string;
-//   taskdesc: string;
-//   taskicon: string; // Include the taskicon prop in the interface
-//   dueDate: string;
-//   isFormVisible: boolean;
-//   isClicked: boolean;
-//   selectedPriority: string;
-//   onNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   onDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   onDueDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   onPriorityChange: (priority: string) => void;
-//   onSubmit: (e: React.FormEvent) => void;
-//   onCancelClick: () => void;
-// }
 const TaskForm: React.FC<TaskFormProps> = ({
   taskname,
   taskdesc,

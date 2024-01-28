@@ -1,30 +1,41 @@
-# React + TypeScript + Vite
+# TrackMe! - Personal Organized Hub 
+Website Url:-https://trackm.netlify.app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to TrackMe! - Your Personal Organized Hub.
 
-Currently, two official plugins are available:
+## Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+TrackMe! is a comprehensive platform designed to simplify your daily routine by providing task management, note-taking, and real-time weather information, all in one convenient place. The project is built using React with TypeScript and Vite for the frontend and MongoDB, Express, and TypeScript for the backend.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Task Management:** Create, prioritize, and organize multiple to-do lists. Set due dates and stay on top of your tasks effortlessly.
 
-- Configure the top-level `parserOptions` property like this:
+- **Note-Taking:** Jot down thoughts, ideas, and reminders in the Notes section. Access and edit your digital notebook from anywhere.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **Weather Information:** Stay informed with the latest weather conditions for your location. Plan your day accordingly and receive weather alerts to stay safe.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+For Coding Purpose
+## How to Run
+1. Fork both the `TrackMe--frontend` and `TrackMe--backend` repositories to your system.
+2.Create .env variable in frontend and backend
+3.In .env variable of frontend store <!--VITE_CLIENT_ID (goole client id for authentication/signin with Oauth google authentication), VITE_SERVER_URL(on which your server/backend code is running)-->
+3.In .env variable of backend store <!--JWT_SECRET(Use openssl to generate a random string (base64-encoded) OR write random things(eg:-HJGHJGHJMNMSBVMN)),(PASSWORD,USER)(your mongodb user details),CLIENT_URL(url on which your frontend is running))-->
+
+### Frontend
+
+2. Open a terminal and navigate to the `client` directory:
+   ```bash
+   cd TrackMe--frontend/client
+   npm i     <!-- To install required packages and modules-->
+   npm run dev    <!-- IT will be running on port 5173-->
+
+### Backend
+
+3. Open a terminal and navigate to the `server` directory:
+   ```bash
+   cd TrackMe--frontend/server
+   npm i     <!-- To install required packages and modules-->
+   npm start    <!-- It will be running on port 3000-->
+

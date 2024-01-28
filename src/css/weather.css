@@ -36,7 +36,7 @@
 /* MAIN */
 
 .container-weather {
-  background-image: url("../../../public/images/poster.jpg");
+  background-image: url("../../public/images/poster.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;

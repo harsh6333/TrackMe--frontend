@@ -9,8 +9,8 @@ const Profile: React.FC = () => {
     Username: "",
     email: "",
   });
-
   useEffect(() => {
+    //User Profile Details Fetching
     try {
       axios
         .get(`${import.meta.env.VITE_SERVER_URL}/api/user-detail`, {

@@ -1,9 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { jwtDecode } from "jwt-decode";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "../css/signup.css";
+import "../../../css/signup.css";
+import GoogleSignup from "../Google/GoogleSignup";
 
 interface UserCredentials {
   Username: string;
@@ -70,36 +68,6 @@ const Signup: React.FC = () => {
     });
   };
 
-  const senddata = async (credential: any) => {
-    try {
-      const resp = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/api/google-signup`,
-        { data: credential },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { success, authToken } = resp.data;
-      if (!success) {
-        alert("Enter valid Credentials");
-      } else {
-        // Store the token in localStorage
-        localStorage.setItem("authToken", authToken);
-
-        // Set the default "Authorization" header for Axios
-        axios.defaults.headers.common["Authorization"] = `${authToken}`;
-        // Redirect to the homepage
-        navigate("/todo");
-        window.location.reload();
-      }
-    } catch (error) {
-      // Handle errors
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <div className="signup-container">
@@ -157,24 +125,8 @@ const Signup: React.FC = () => {
               <p>Or SignUp With</p>
               <span></span>
             </div>
-            <GoogleOAuthProvider
-              clientId={`${import.meta.env.VITE_CLIENT_ID}`}
-              //   className="google-signup-btn"
-            >
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  // Extract the Google ID token from the credential response
-                  const credential = jwtDecode(
-                    credentialResponse.credential as any
-                  ) as any;
-                  // Send the ID token to the backend
-                  senddata(credential);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-            </GoogleOAuthProvider>
+            {/* google signup */}
+            <GoogleSignup />
             <p className="google">
               SignIn might <br /> take Time due to slow <br /> Database
             </p>

@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
-import Weather from "./components/Weather";
-import Notes from "./components/Notes";
-import Signup from "./login/signup";
-import Login from "./login/login";
+import Weather from "./components/Weather/Weather";
+import Notes from "./components/Notes/Notes";
+import Signup from "./components/authorization/Form/signup";
+import Login from "./components/authorization/Form/Login";
 import NavbarM from "./components/Navbar";
 import Profile from "./components/Profile";
 import Todo from "./components/Todo/Todo";
@@ -30,7 +30,7 @@ function App() {
             <Route path="/nav" element={<NavbarM />} />
           </>
         ) : (
-          // Redirect unauthorized users to the login page
+          // Redirecting unauthorized users to the login page
           <Route path="/*" element={<Navigate replace to="/signup" />} />
         )}
         <Route path="/404" element={<NotFound />} />

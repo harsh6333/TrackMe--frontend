@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
-import "../css/notes.css";
-import NavbarM from "./Navbar";
+import "../../css/notes.css";
+import NavbarM from "../Navbar";
 import axios from "axios";
 
 interface Note {
@@ -19,7 +19,7 @@ const Notes: React.FC = () => {
   const [idnumber] = useState(1);
   const [notes, setNotes] = useState<Note[]>([]);
   const [isnotesupdated, setIsNotesUpdated] = useState(false);
-  const [editIndex, setEditIndex] = useState(-1); // Initialize as -1 to indicate no active edit.
+  const [editIndex, setEditIndex] = useState(-1); // Initialize as -1 to show no edit happening/activated.
 
   const handleNoteChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

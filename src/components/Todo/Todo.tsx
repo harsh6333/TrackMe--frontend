@@ -103,7 +103,7 @@ const Todo: React.FC<TodoProps> = () => {
           { headers }
         )
         .then(() => {
-          console.log("Task added successfully");
+          console.log("List added successfully");
         })
         .catch(() => {
           // console.error("Error adding task:", error);
@@ -187,7 +187,8 @@ const Todo: React.FC<TodoProps> = () => {
     setIcon(selectedOption.value);
   };
 
-  const handleLists = () => {
+  const handleLists = (e:React.FormEvent) => {
+    e.preventDefault();
     const listId = nextListId;
     const newList: List = { listname: listName, icon: icon, id: listId };
 
@@ -240,6 +241,7 @@ const Todo: React.FC<TodoProps> = () => {
     axios
       .get(`${import.meta.env.VITE_SERVER_URL}/api/get-user-list`, { headers })
       .then((response) => {
+        
         setUserLists(response.data.userlists);
         const userlistss = response.data.userlists;
         userlistss.map((userlist: any) => {
@@ -420,30 +422,31 @@ const Todo: React.FC<TodoProps> = () => {
           >
             X
           </button>
-          <div className="list-title">
-            <Select
-              className="Select"
-              value={selectedOption}
-              onChange={handleOptionChange}
-              options={options}
-              components={customComponents}
-              styles={customStyles}
-              menuPlacement="auto"
-            />
-            <div className="list-inputss">
-              <input
-                type="text"
-                required
-                value={listName}
-                onChange={handleChangeListName}
-                placeholder="New List"
-                className="list-name-input"
+          <form onSubmit={handleLists}>
+            <div className="list-title">
+              <Select
+                className="Select"
+                value={selectedOption}
+                onChange={handleOptionChange}
+                options={options}
+                styles={customStyles}
+                menuPlacement="auto"
               />
-              <button onClick={handleLists} className="list-add-btn">
-                +
-              </button>
+              <div className="list-inputss">
+                <input
+                  type="text"
+                  required
+                  value={listName}
+                  onChange={handleChangeListName}
+                  placeholder="New List"
+                  className="list-name-input"
+                />
+                <button type="submit" className="list-add-btn">
+                  +
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
           <div className="list-names">
             {lists.map((list) => {
               const showlistId = () => {

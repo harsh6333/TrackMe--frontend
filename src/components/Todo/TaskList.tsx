@@ -3,7 +3,7 @@ import "../../css/form.css";
 import Task from "./Task";
 
 interface TaskListProps {
-  tasks: any[]; // Adjust the type based on the actual type of tasks
+  tasks: any[]; // Adjust the type based on basis of type of tasks
   onDeleteTask: (index: number) => void;
 }
 

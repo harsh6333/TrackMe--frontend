@@ -1,10 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import "../css/login.css";
+import "../../../css/login.css";
 import axios from "axios";
+import GoogleLoginComponent from "../Google/GoogleLogin";
 
 interface UserCredentials {
   Username: string;
@@ -70,33 +68,6 @@ const Login: React.FC = () => {
     });
   };
 
-  const senddata = async (credential: any) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/api/google-login`,
-        {
-          data: credential,
-        }
-      );
-      const { success, authToken } = response.data;
-
-      if (!success) {
-        alert("Enter valid Credentials");
-      } else {
-        // Store the token in localStorage
-        localStorage.setItem("authToken", authToken);
-
-        // Set the default "Authorization" header for Axios
-        axios.defaults.headers.common["Authorization"] = `${authToken}`;
-        // Redirect to the homepage
-        navigate("/todo");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log("Error logging in");
-    }
-  };
-
   return (
     <>
       <div className="login-container">
@@ -130,21 +101,8 @@ const Login: React.FC = () => {
             <Link to="/signup" className="m-3 btn btn-danger">
               Create New Account
             </Link>
-            <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  // Extract the Google ID token from the credential response
-                //  const credential = jwt_decode<JwtPayload>(
-                //    (credentialResponse as any).credential
-                //  );
-                 const credential = jwtDecode(credentialResponse.credential as any);
-                 senddata(credential);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-            </GoogleOAuthProvider>
+          {/* google login */}
+            <GoogleLoginComponent />
             <p className="google">
               SignIn might <br /> take Time due to slow <br />
               Database
