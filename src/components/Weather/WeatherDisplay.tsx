@@ -18,7 +18,9 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weatherData }) => {
     const fetchData = async () => {
       try {
         const timezoneResponse = await axios.get(
-          `https://api.ipgeolocation.io/timezone?apiKey=02346f41df984fafad4633a50294fc65&lat=${weatherData.latitudes}&long=${weatherData.longitudes}`
+          `https://api.ipgeolocation.io/timezone?apiKey=${
+            import.meta.env.VITE_OPENWEATHER_API_KEY
+          }=${weatherData.latitudes}&long=${weatherData.longitudes}`
         );
         const time = timezoneResponse.data;
         const date = time["date_time_txt"];

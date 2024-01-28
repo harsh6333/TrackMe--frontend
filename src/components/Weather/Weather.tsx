@@ -43,7 +43,9 @@ const Weather: React.FC = () => {
     //fetch request to fetch weather data from OpenWeather API
     await axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=7835a0b878522244bfed352d88fa37eb`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${
+          import.meta.env.VITE_OPENWEATHER_API_ID
+        }`
       )
       .then(async (resp) => {
         const result = resp.data;
