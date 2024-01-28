@@ -128,7 +128,8 @@ const Signup: React.FC = () => {
             {/* google signup */}
             <GoogleSignup />
             <p className="google">
-              SignIn might <br /> take Time due to slow <br /> Database
+              SignIn might <br /> take Time due to slow <br />
+              Database
             </p>
           </form>
         </div>

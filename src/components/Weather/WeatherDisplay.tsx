@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import gauge from "../../../public/images/gauge.png";
 import thermometer from "../../../public/images/thermometer.png";
 import humidity from "../../../public/images/humidity.png";
 import wind from "../../../public/images/wind.png";
-import '../../css/weather.css'
+import "../../css/weather.css";
 import { WeatherData } from "./Weather";
 
 interface WeatherDisplayProps {
-    weatherData:WeatherData
+  weatherData: WeatherData;
 }
 
 const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weatherData }) => {
+  const [datee, setDate] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const timezoneResponse = await axios.get(
+          `https://api.ipgeolocation.io/timezone?apiKey=02346f41df984fafad4633a50294fc65&lat=${weatherData.latitudes}&long=${weatherData.longitudes}`
+        );
+        const time = timezoneResponse.data;
+        const date = time["date_time_txt"];
+        setDate(date);
+      } catch (error) {
+        console.error("Error fetching timezone data:", error);
+      }
+    };
+
+    fetchData();
+  }, [weatherData.latitudes, weatherData.longitudes]);
+
   return (
     <section id="cards" className="cards">
       <div className="data">
         <div className="date">
-          <span>{weatherData.date}</span>
+          <span>{datee}</span>
           <div className="desc">
             <img
               id="img"
@@ -25,7 +45,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({ weatherData }) => {
             <span>{weatherData.WeatherDesc}</span>
           </div>
         </div>
-       {/* temperatures */}
+        {/* temperatures */}
         <div className="tempcity">
           <div id="city2">
             <h2>

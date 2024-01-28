@@ -76,7 +76,9 @@
   color: red;
 }
 .google{
+  padding-top: 10px;
   color: black;
+  text-align: center;
 }
 @media screen and (max-width: 800px) {
   .login {

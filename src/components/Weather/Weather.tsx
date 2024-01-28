@@ -7,7 +7,6 @@ import "../../css/weather.css";
 export interface WeatherData {
   City: string;
   Country: string;
-  date: string;
   Weather: string;
   WeatherDesc: string;
   Temp: number | null;
@@ -25,7 +24,6 @@ const Weather: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>({
     City: "",
     Country: "",
-    date: "",
     Weather: "",
     WeatherDesc: "",
     Temp: null,
@@ -61,16 +59,9 @@ const Weather: React.FC = () => {
         const humidity = result["main"]["humidity"];
         const pressure = result["main"]["pressure"];
         const icon = result["weather"][0]["icon"];
-        const timezone = await axios.get(
-          `https://api.ipgeolocation.io/timezone?apiKey=02346f41df984fafad4633a50294fc65&lat=${latitudes}&long=${longitudes}`
-        );
-        const time = timezone.data;
-        const date = time["date_time_txt"];
-        setDate(date);
         setWeatherData({
           City: city,
           Country: country,
-          date: date,
           Weather: weather,
           WeatherDesc: weatherdesc,
           Temp: temperature,
@@ -88,7 +79,7 @@ const Weather: React.FC = () => {
     setIsClicked(true);
   };
 
-  const [date, setDate] = useState("");
+
 
   return (
     <>
@@ -96,7 +87,7 @@ const Weather: React.FC = () => {
       <div className="container-weather">
         <h4 className="lets-find">Let's find out weather in your city</h4>
         <WeatherForm onSubmit={handleFormSubmit} />
-        {isClicked && <WeatherDisplay weatherData={weatherData} date={date} />}
+        {isClicked && <WeatherDisplay weatherData={weatherData} />}
       </div>
     </>
   );
