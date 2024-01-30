@@ -10,7 +10,7 @@ interface UserCredentials {
 }
 
 const Signup: React.FC = () => {
-  const [ErrorMessages, setErrorMessages] = useState<string[]>([]);
+  const [ErrorMessages, setErrorMessages] = useState("");
   const [UserCredentials, setUserCredentials] = useState<UserCredentials>({
     Username: "",
     email: "",
@@ -42,11 +42,9 @@ const Signup: React.FC = () => {
       if (!json.success) {
         // Check if the response includes validation errors
         if (json.errors) {
-          // Handle validation errors, set them in the state variable
-          setErrorMessages(json.errors.map((error: any) => error.msg));
+          setErrorMessages("Password & Username must contain 5 charcters");
         } else {
-          // Handle other types of errors
-          setErrorMessages([json.error]);
+          setErrorMessages(json.error);
         }
       }
 
@@ -55,9 +53,9 @@ const Signup: React.FC = () => {
         navigate("/login");
       }
     } catch (error) {
-      console.error("Error during form submission:", error);
-      // Handle other types of errors, for example, set an error message in state
-      setErrorMessages(["An error occurred while submitting the form."]);
+      // console.error("Error during form submission:", error);
+      // other types of errors
+      setErrorMessages("An error occurred while submitting the form.");
     }
   };
 
@@ -81,6 +79,7 @@ const Signup: React.FC = () => {
               <p>Username</p>
               <input
                 name="Username"
+                // className=""
                 value={UserCredentials.Username}
                 onChange={handleChange}
               />
@@ -105,9 +104,7 @@ const Signup: React.FC = () => {
               />
             </label>
             <p className="error">
-              {ErrorMessages.map((errorMessage, index) => (
-                <span key={index}>{errorMessage}</span>
-              ))}
+              <span>{ErrorMessages}</span>
             </p>
             <div className="buttons-signup">
               <button type="submit" className="btn--signin">

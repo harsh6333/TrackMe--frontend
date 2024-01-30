@@ -19,7 +19,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-
         {/* Protected routes accessible only to authenticated users */}
         {authToken ? (
           <>
@@ -29,11 +28,11 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/nav" element={<NavbarM />} />
           </>
-        ) : (
-          // Redirecting unauthorized users to the login page
-          <Route path="/*" element={<Navigate replace to="/signup" />} />
-        )}
-        <Route path="/404" element={<NotFound />} />
+        ) : null}
+        {/* Redirecting unauthorized users to the login page for any unmatched routes */}
+        <Route path="/todo" element={<Navigate replace to="/login" />} />
+        {/* Catch-all route for handling any unmatched routes */}
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
