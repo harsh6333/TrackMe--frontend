@@ -27,7 +27,6 @@ TrackMe! is a comprehensive platform designed to simplify your daily routine by 
 
 2. Open a terminal and navigate to the `TrackMe--frontend/client` directory:
    ```bash
-   cd TrackMe--frontend/client
    npm i     <!-- To install required packages and modules-->
    npm run dev    <!-- IT will be running on port 5173-->
 
