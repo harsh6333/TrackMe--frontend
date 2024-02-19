@@ -34,13 +34,10 @@ const Login: React.FC = () => {
           Username: UserCredentials.Username,
           password: UserCredentials.password,
         }
-        
       );
       const { success, authToken } = response.data;
 
       if (!success) {
-        
-        
         alert("Enter valid Credentials");
       } else {
         // Store the token in localStorage
@@ -51,19 +48,18 @@ const Login: React.FC = () => {
 
         // Redirect to the homepage
         navigate("/todo");
-       window.location.reload();
+        window.location.reload();
       }
-    } catch (error:any) {
-    
-     if (error.response.data.error.name=="ZodError"){
-      setErrorMessage("Password should contain atleast 5 characters")
-     }
-       if (axios.isAxiosError(error) && error.response?.status === 400) {
-         // If the error is a 400 Bad Request, set error message to show
-         setErrorMessage(error.response.data.error);
-       } else {
+    } catch (error: any) {
+      if (error.response.data.error.name == "ZodError") {
+        setErrorMessage("Password should contain atleast 5 characters");
+      }
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        // If the error is a 400 Bad Request, set error message to show
+        setErrorMessage(error.response.data.error);
+      } else {
         //  console.log("Error logging in:", error.response.data.error.name);
-       }
+      }
     }
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +102,7 @@ const Login: React.FC = () => {
             <Link to="/signup" className="m-3 btn btn-danger">
               Create New Account
             </Link>
-          {/* google login */}
+            {/* google login */}
             <GoogleLoginComponent />
             <p className="google">
               SignIn might <br /> take Time due to slow <br />

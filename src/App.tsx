@@ -16,7 +16,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public routes accessible to all users */}
-        <Route path="/" element={<Home />} />
+        {authToken ? (
+          <Route path="/" element={<Navigate replace to="/todo" />} />
+        ) : (
+          // Public routes accessible to all users
+          <Route path="/" element={<Home />} />
+        )}
+
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* Protected routes accessible only to authenticated users */}

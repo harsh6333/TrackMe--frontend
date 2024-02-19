@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const GoogleLoginComponent: React.FC = () => {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   const senddata = async (credential: any) => {
     try {
       const response = await axios.post(

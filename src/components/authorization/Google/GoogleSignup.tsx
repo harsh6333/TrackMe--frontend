@@ -4,9 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const GoogleSignup = () => {
-    
   const senddata = async (credential: any) => {
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     try {
       const resp = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/google-signup`,
