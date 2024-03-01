@@ -8,7 +8,7 @@ import NavbarM from "./components/Navbar";
 import Profile from "./components/Profile";
 import Todo from "./components/Todo/Todo";
 import NotFound from "./components/NotFound";
-
+import BudgetTracker from "./components/Budget-Tracker/BudgetTracker";
 function App() {
   const authToken = localStorage.getItem("authToken");
 
@@ -25,6 +25,7 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/budget-tracker" element={<BudgetTracker />} />
         {/* Protected routes accessible only to authenticated users */}
         {authToken ? (
           <>

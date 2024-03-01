@@ -43,6 +43,11 @@ const NavbarM = () => {
             </Link>
           </li>
           <li>
+            <Link className="nav-link" to="/budget-tracker">
+             Budget Tracker
+            </Link>
+          </li>
+          <li>
             <Link className="nav-link" to="/weather">
               Weather
             </Link>

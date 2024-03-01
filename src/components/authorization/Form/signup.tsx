@@ -10,6 +10,7 @@ interface UserCredentials {
 }
 
 const Signup: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const [ErrorMessages, setErrorMessages] = useState("");
   const [UserCredentials, setUserCredentials] = useState<UserCredentials>({
     Username: "",
@@ -20,6 +21,9 @@ const Signup: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Set loading to true to show the loader
+    setLoading(true);
 
     try {
       const response = await fetch(
@@ -42,7 +46,7 @@ const Signup: React.FC = () => {
       if (!json.success) {
         // Check if the response includes validation errors
         if (json.errors) {
-          setErrorMessages("Password & Username must contain 5 charcters");
+          setErrorMessages("Password & Username must contain 5 characters");
         } else {
           setErrorMessages(json.error);
         }
@@ -53,9 +57,10 @@ const Signup: React.FC = () => {
         navigate("/login");
       }
     } catch (error) {
-      // console.error("Error during form submission:", error);
-      // other types of errors
       setErrorMessages("An error occurred while submitting the form.");
+    } finally {
+      // Set loading to false after the signup process is complete
+      setLoading(false);
     }
   };
 
@@ -79,7 +84,6 @@ const Signup: React.FC = () => {
               <p>Username</p>
               <input
                 name="Username"
-                // className=""
                 value={UserCredentials.Username}
                 onChange={handleChange}
               />
@@ -107,8 +111,8 @@ const Signup: React.FC = () => {
               <span>{ErrorMessages}</span>
             </p>
             <div className="buttons-signup">
-              <button type="submit" className="btn--signin">
-                Sign In
+              <button type="submit" className="btn--signin" disabled={loading}>
+                {loading ? "Signing Up..." : "Sign Up"}
               </button>
               <div className="already-user">
                 <p>Already a User?</p>
@@ -124,10 +128,7 @@ const Signup: React.FC = () => {
             </div>
             {/* google signup */}
             <GoogleSignup />
-            <p className="google">
-              SignIn might <br /> take Time due to slow <br />
-              Database
-            </p>
+           
           </form>
         </div>
       </div>

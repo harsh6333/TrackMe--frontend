@@ -2,10 +2,9 @@ import { jwtDecode } from "jwt-decode";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 const GoogleSignup = () => {
+  const navigate = useNavigate();
   const senddata = async (credential: any) => {
-    const navigate = useNavigate();
     try {
       const resp = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/google-signup`,
@@ -42,11 +41,10 @@ const GoogleSignup = () => {
     >
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          // Extract the Google ID token from the credential response
+          console.log("Google Login Success:", credentialResponse);
           const credential = jwtDecode(
             credentialResponse.credential as any
           ) as any;
-          // Send the ID token to the backend
           senddata(credential);
         }}
         onError={() => {
@@ -54,6 +52,7 @@ const GoogleSignup = () => {
         }}
       />
     </GoogleOAuthProvider>
+      
   );
 };
 

@@ -10,6 +10,7 @@ interface UserCredentials {
 }
 
 const Login: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState<string>("");
   const [UserCredentials, setUserCredentials] = useState<UserCredentials>({
     Username: "",
@@ -26,6 +27,9 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Set loading to true to show the loader
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -51,17 +55,21 @@ const Login: React.FC = () => {
         window.location.reload();
       }
     } catch (error: any) {
-      if (error.response.data.error.name == "ZodError") {
-        setErrorMessage("Password should contain atleast 5 characters");
+      if (error.response.data.error.name === "ZodError") {
+        setErrorMessage("Password should contain at least 5 characters");
       }
       if (axios.isAxiosError(error) && error.response?.status === 400) {
-        // If the error is a 400 Bad Request, set error message to show
+        // If the error is a 400 Bad Request, set the error message to show
         setErrorMessage(error.response.data.error);
       } else {
-        //  console.log("Error logging in:", error.response.data.error.name);
+        // console.log("Error logging in:", error.response.data.error.name);
       }
+    } finally {
+      // Set loading to false after the login process is complete
+      setLoading(false);
     }
   };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserCredentials({
       ...UserCredentials,
@@ -96,18 +104,14 @@ const Login: React.FC = () => {
               />
             </label>
             <p className="Error">{ErrorMessage}</p>
-            <button type="submit" className="Log-In-Button">
-              Log In
+            <button type="submit" className="Log-In-Button" disabled={loading}>
+              {loading ? "Logging In..." : "Log In"}
             </button>
             <Link to="/signup" className="m-3 btn btn-danger">
               Create New Account
             </Link>
             {/* google login */}
             <GoogleLoginComponent />
-            <p className="google">
-              SignIn might <br /> take Time due to slow <br />
-              Database
-            </p>
           </form>
         </div>
       </div>
